@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 const app = express()
 app.use(express.json())
 const port = 3000
-mongoose.connect('mongodb+srv://dpdo1:adm123@node-mongo.8iq2q.mongodb.net/?retryWrites=true&w=majority&appName=node-mongo')
 
 const Movie = mongoose.model('Movie', {
     title: String,
@@ -13,9 +12,15 @@ const Movie = mongoose.model('Movie', {
     trailer_url: String
 });
 
-app.get("/", (rep, res) => {
-    res.send("Hello World");
+app.get("/", async (rep, res) => {
+    const movies = await Movie.find()
+    return res.send(movies);
 });
+
+app.delete("/:id", async(req, res) => {
+    const movie = await Movie.findByIdAndDelete(req.params.id)
+    return res.send(movie)
+})
 
 app.post("/", async (req, res) => {
     const movie = new Movie({
@@ -30,6 +35,7 @@ app.post("/", async (req, res) => {
 });
 
 app.listen(port, () => {
+    mongoose.connect('mongodb+srv://dpdo1:adm123@node-mongo.8iq2q.mongodb.net/?retryWrites=true&w=majority&appName=node-mongo')
     console.log('App running');
 });
 

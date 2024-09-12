@@ -1,5 +1,7 @@
 import './style.css'
 
+import Trash from '../../assets/trash.png'
+
 function Home() {
 
   const users = [
@@ -23,22 +25,22 @@ function Home() {
     <div className='container'>
       <form>
         <h1>User Registration</h1>
-        <input name='name' type="text" />
-        <input name='age' type="number" />
-        <input name='email' type="email" />
+        <input placeholder='Name' name='name' type="text" />
+        <input placeholder='Age' name='age' type="number" />
+        <input placeholder='Email' name='email' type="email" />
         <button type='button'>Register</button>
       </form>
 
       {users.map((user) => (
         <>
-        <div key={user.id}>
-          <p>Name: {user.name}</p>
-          <p>Age: {user.age}</p>
-          <p>Email: {user.email}</p>
+        <div key={user.id} className='card'>
+          <p>Name: <span>{user.name}</span></p>
+          <p>Age: <span>{user.age}</span></p>
+          <p>Email: <span>{user.email}</span></p>
+          <button>
+            <img src={Trash} alt="" />
+          </button>
         </div>
-        <button>
-
-        </button>
         </>
       ))}
     </div>

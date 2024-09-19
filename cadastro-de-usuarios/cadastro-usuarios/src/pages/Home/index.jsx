@@ -1,23 +1,22 @@
 import './style.css'
+import { useEffect } from 'react';
 
 import Trash from '../../assets/trash.png'
+import api from '../../services/api'
 
 function Home() {
 
-  const users = [
-    {
-      id: '225151',
-      name: 'Diego',
-      age: 33,
-      email: 'diego@gamil.com'
-    },
-    {
-      id: '225152',
-      name: 'Suze',
-      age: 3,
-      email: 'suze@gamil.com'
-    }
-  ]
+  let users = [];
+
+  async function getUsers() {
+    users = await api.get('/users');
+    console.log(users);
+  }
+
+  //ele vai rodar isso td vez q a página abrir
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
         

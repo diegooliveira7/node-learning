@@ -1,0 +1,1 @@
+Quando o back estiver pronto tem que instalar o "npm install cors", para não dar erro de dialogo do back com o front

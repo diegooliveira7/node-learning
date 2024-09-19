@@ -1,10 +1,12 @@
-import express, { response } from 'express'
+import express from 'express'
 import { PrismaClient } from '@prisma/client'
+import cors from 'cors'
 
 const prisma = new PrismaClient()
 
 const app = express()
 app.use(express.json())
+app.use(cors()) //dessa forma, está habilitando qualquer página de acessar
 
 app.post('/users', async (req, res) => {
     // users.push(req.body)
@@ -23,7 +25,18 @@ app.post('/users', async (req, res) => {
 app.get('/users', async (req, res) => {
     // res.send('OK, deu bom')
 
-    const users = await prisma.user.findMany()
+    let users = [];
+    if(req.query) {
+        users = await prisma.user.findMany({
+            where: {
+                name: req.query.name,
+                email: req.query.email,
+                age: req.query.age
+            }
+        });
+    } else {
+        users = await prisma.user.findMany()
+    }
 
     res.status(200).json(users)
 });
@@ -42,10 +55,18 @@ app.put('/users/:id', async (req, res) => {
         }
     });
 
-    res.status(201).send('Ok, deu certo') //201 significa que eu criei e estou respondendo, é um padrão
+    res.status(201).json(req.body) //201 significa que eu criei e estou respondendo, é um padrão
 })
 
-// app.delete()
+app.delete('/users/:id', async (req, res) => {
+    await prisma.user.delete({
+        where: {
+            id: req.params.id
+        }
+    });
+
+    res.status(200).json({message: 'Usuário deletado com sucesso!'})
+});
 
 app.listen(3000)
 
